@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RPG Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: 'Orbitron', sans-serif;
+}
+
+body{
+    background:#0a0f1c;
+    color:#00f7ff;
+    overflow-x:hidden;
+}
+
+canvas{
+    position:fixed;
+    top:0;
+    left:0;
+    z-index:-1;
+}
+
+.container{
+    text-align:center;
+    padding:60px 20px;
+}
+
+h1{
+    font-size:3rem;
+    text-shadow:0 0 15px #00f7ff;
+}
+
+.subtitle{
+    margin-top:10px;
+    opacity:0.7;
+}
+
+.stats{
+    margin-top:50px;
+    max-width:600px;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.stat{
+    margin-bottom:25px;
+}
+
+.label{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:5px;
+}
+
+.bar{
+    height:15px;
+    background:#111a2e;
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 0 10px #00f7ff inset;
+}
+
+.fill{
+    height:100%;
+    width:0;
+    background:linear-gradient(90deg,#0066ff,#00f7ff);
+    box-shadow:0 0 20px #00f7ff;
+    border-radius:20px;
+    transition:2s;
+}
+
+.card-section{
+    margin-top:60px;
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
+.card{
+    background:#111a2e;
+    padding:25px;
+    border-radius:15px;
+    width:250px;
+    box-shadow:0 0 15px #003cff;
+    transition:0.4s;
+}
+
+.card:hover{
+    transform:translateY(-10px);
+    box-shadow:0 0 25px #00f7ff;
+}
+
+.btn{
+    margin-top:40px;
+    padding:12px 30px;
+    border:none;
+    border-radius:30px;
+    background:linear-gradient(90deg,#003cff,#00f7ff);
+    color:#fff;
+    cursor:pointer;
+    transition:0.4s;
+}
+
+.btn:hover{
+    box-shadow:0 0 20px #00f7ff;
+}
+</style>
+</head>
+<body>
+
+<canvas id="particles"></canvas>
+
+<div class="container">
+    <h1>⚔️ Shadow Dev</h1>
+    <p class="subtitle">Level 99 Frontend Wizard</p>
+
+    <div class="stats">
+        <div class="stat">
+            <div class="label"><span>HTML</span><span>95%</span></div>
+            <div class="bar"><div class="fill" data-width="95%"></div></div>
+        </div>
+        <div class="stat">
+            <div class="label"><span>CSS</span><span>90%</span></div>
+            <div class="bar"><div class="fill" data-width="90%"></div></div>
+        </div>
+        <div class="stat">
+            <div class="label"><span>JavaScript</span><span>85%</span></div>
+            <div class="bar"><div class="fill" data-width="85%"></div></div>
+        </div>
+    </div>
+
+    <div class="card-section">
+        <div class="card">🗡️ Project Alpha</div>
+        <div class="card">🛡️ Project Beta</div>
+        <div class="card">🔮 Project Gamma</div>
+    </div>
+
+    <button class="btn" onclick="levelUp()">Level Up</button>
+</div>
+
+<script>
+// Animate Skill Bars
+window.onload = () => {
+    document.querySelectorAll('.fill').forEach(bar=>{
+        bar.style.width = bar.dataset.width;
+    });
+};
+
+// Level Up Button
+function levelUp(){
+    alert("✨ You gained +10 XP!");
+}
+
+// Particle Background
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particlesArray = [];
+
+class Particle{
+    constructor(){
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 2;
+        this.speedX = (Math.random() - 0.5) * 0.5;
+        this.speedY = (Math.random() - 0.5) * 0.5;
+    }
+    update(){
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if(this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+        if(this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+    }
+    draw(){
+        ctx.fillStyle = '#00f7ff';
+        ctx.beginPath();
+        ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
+        ctx.fill();
+    }
+}
+
+function init(){
+    for(let i=0;i<120;i++){
+        particlesArray.push(new Particle());
+    }
+}
+
+function animate(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    particlesArray.forEach(p=>{
+        p.update();
+        p.draw();
+    });
+    requestAnimationFrame(animate);
+}
+
+init();
+animate();
+
+window.addEventListener('resize',()=>{
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+});
+</script>
+
+</body>
+</html>
